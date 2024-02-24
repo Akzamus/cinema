@@ -1,7 +1,9 @@
 const fetch = require('node-fetch');
-const { TMDB_API_KEY } = require("../config");
+const {TMDB_API_KEY} = require("../config");
+
 
 class TmdbApi {
+
     constructor(apiKey) {
         this.apiKey = apiKey;
         this.options = {
@@ -55,6 +57,7 @@ class TmdbApi {
         const key = jsonData.results[0].key;
         return `https://www.youtube.com/watch?v=${key}`;
     }
+
 }
 
 module.exports = new TmdbApi(TMDB_API_KEY);

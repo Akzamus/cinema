@@ -42,7 +42,7 @@ class MovieController {
             return res.status(200).json(movie)
         } catch (e) {
             console.log(e)
-            return res.status(500).json({error: "Failed to get movie"});
+            return res.status(500).json({message: "Failed to get movie"});
         }
     }
 
@@ -63,7 +63,7 @@ class MovieController {
             return res.status(201).json({message: "Movie added", movie});
         } catch (e) {
             console.log(e);
-            return res.status(500).json({error: "Failed to add movie"});
+            return res.status(500).json({message: "Failed to add movie"});
         }
     }
 
@@ -79,10 +79,10 @@ class MovieController {
                 return res.status(404).json({message: "Movie not found"});
             }
 
-            return res.status(200).json({message: "Movie deleted", title: deletedMovie.title});
+            return res.status(200).json({message: "Movie deleted", movie: deletedMovie});
         } catch (e) {
             console.log(e)
-            return res.status(500).json({error: "Failed to delete movie"});
+            return res.status(500).json({message: "Failed to delete movie"});
         }
     }
 
@@ -100,27 +100,27 @@ class MovieController {
                 return res.status(404).json({message: "Movie not found"});
             }
 
-            let userRating = await Rating.findOne({user: userId, movie: movieId});
+            let userRating = await Rating.findOne({userId, movieId}, {__v: 0});
             if (userRating) {
                 if (userRating.rating === rating) {
-                    return res.status(200).json({message: "Movie rated successfully"});
+                    return res.status(200).json({message: "Movie rated successfully", rating: userRating});
                 }
                 userRating.rating = rating;
                 await userRating.save();
             } else {
-                userRating = new Rating({user: userId, movie: movieId, rating});
+                userRating = new Rating({userId, movieId, rating});
                 await userRating.save();
             }
 
-            const ratings = await Rating.find({movie: movieId});
+            const ratings = await Rating.find({movieId});
             const totalRatings = ratings.length;
             const totalRatingSum = ratings.reduce((acc, cur) => acc + cur.rating, 0);
             movie.averageRating = totalRatingSum / totalRatings;
             await movie.save();
 
-            return res.status(200).json({message: "Movie rated successfully"});
-        } catch (error) {
-            console.error(error);
+            return res.status(200).json({message: "Movie rated successfully", rating: userRating});
+        } catch (e) {
+            console.log(e);
             return res.status(500).json({message: "Failed to rate movie"});
         }
     }
