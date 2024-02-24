@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { check, validationResult } = require("express-validator");
+const { check, param } = require("express-validator");
 const movieController = require('../controllers/movieController');
 const roleMiddleware = require('../middleware/roleMiddleware');
 
@@ -10,6 +10,13 @@ const addMovieValidation = [
     roleMiddleware(["ADMIN"])
 ];
 
+const deleteMovieValidation = [
+    param("movieId", "Invalid movie ID").isMongoId(),
+    roleMiddleware(["ADMIN"])
+];
+
 movieRouter.post("", addMovieValidation, movieController.addMovie);
+movieRouter.get("", movieController.getMovies)
+movieRouter.delete("/:movieId", deleteMovieValidation, movieController.deleteMovieById)
 
 module.exports = movieRouter;
