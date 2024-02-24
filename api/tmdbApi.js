@@ -1,6 +1,5 @@
 const fetch = require('node-fetch');
 const { TMDB_API_KEY } = require("../config");
-const {json} = require("express");
 
 class TmdbApi {
     constructor(apiKey) {
@@ -15,8 +14,8 @@ class TmdbApi {
         this.baseUrl = 'https://api.themoviedb.org/3';
     }
 
-    async getFirstMovieIdByName(name) {
-        const url = `${this.baseUrl}/search/movie?query=${name}&language=en-US&page=1`;
+    async getFirstMovieIdByTitle(title) {
+        const url = `${this.baseUrl}/search/movie?query=${title}&language=en-US&page=1`;
         const response = await fetch(url, this.options);
         if (!response.ok) {
             throw new Error('Failed to fetch movie data');

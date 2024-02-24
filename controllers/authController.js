@@ -33,7 +33,7 @@ class AuthController {
             return res.status(201).json({ message: "User successfully registered" });
         } catch (e) {
             console.log(e);
-            return res.status(400).json({ message: 'Registration error' });
+            return res.status(400).json({ message: "Registration error" });
         }
     }
 
@@ -46,13 +46,13 @@ class AuthController {
             }
             const validPassword = bcrypt.compareSync(password, user.password);
             if (!validPassword) {
-                return res.status(400).json({ message: `Incorrect password` });
+                return res.status(400).json({ message: "Incorrect password" });
             }
             const token = generateAccessToken(user._id, user.roles);
             return res.status(200).json({ token });
         } catch (e) {
             console.log(e);
-            return res.status(400).json({ message: 'Login error' });
+            return res.status(400).json({ message: "Login error" });
         }
     }
 

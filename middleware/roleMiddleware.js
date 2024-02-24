@@ -23,8 +23,8 @@ module.exports = function (roles) {
                 return res.status(403).json({ message: "Access denied" });
             }
             next();
-        } catch (error) {
-            console.error(error);
+        } catch (e) {
+            console.log(e);
             return res.status(403).json({ message: "User is not authorized" });
         }
     };

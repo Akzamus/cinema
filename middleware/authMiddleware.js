@@ -13,8 +13,8 @@ module.exports = function (req, res, next) {
         }
         req.user = jwt.verify(token, JWT_SECRET);
         next();
-    } catch (error) {
-        console.error(error);
+    } catch (e) {
+        console.error(e);
         return res.status(403).json({ message: "User is not authorized" });
     }
 };
