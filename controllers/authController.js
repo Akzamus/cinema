@@ -14,6 +14,7 @@ const generateAccessToken = (id, roles) => {
 };
 
 class AuthController {
+
     async registration(req, res) {
         try {
             const errors = validationResult(req);
@@ -29,7 +30,7 @@ class AuthController {
             const userRole = await Role.findOne({ value: "USER" });
             const user = new User({ username, password: hashPassword, roles: [userRole.value] });
             await user.save();
-            return res.json({ message: "User successfully registered" });
+            return res.status(201).json({ message: "User successfully registered" });
         } catch (e) {
             console.log(e);
             res.status(400).json({ message: 'Registration error' });
@@ -48,21 +49,13 @@ class AuthController {
                 return res.status(400).json({ message: `Incorrect password` });
             }
             const token = generateAccessToken(user._id, user.roles);
-            return res.json({ token });
+            return res.status(200).json({ token });
         } catch (e) {
             console.log(e);
             res.status(400).json({ message: 'Login error' });
         }
     }
 
-    async getUsers(req, res) {
-        try {
-            const users = await User.find();
-            res.json(users);
-        } catch (e) {
-            console.log(e);
-        }
-    }
 }
 
 module.exports = new AuthController();
