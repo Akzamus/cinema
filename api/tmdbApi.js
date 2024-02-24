@@ -21,11 +21,11 @@ class TmdbApi {
         if (!response.ok) {
             throw new Error('Failed to fetch movie data');
         }
-        const results = await response.json().results;
-        if (results.length === 0) {
+        const jsonData = await response.json();
+        if (jsonData.results.length === 0) {
             throw new Error('Movie not found');
         }
-        return results[0].id;
+        return jsonData.results[0].id;
     }
 
     async getMovieInfoById(movieId) {
@@ -34,12 +34,12 @@ class TmdbApi {
         if (!response.ok) {
             throw new Error('Failed to fetch movie data');
         }
-        const json = await response.json();
+        const jsonData = await response.json();
         return {
-            title: json["original_title"],
-            description: json["overview"],
-            posterUrl: `https://image.tmdb.org/t/p/{IMAGE_WIDTH}${json["poster_path"]}`,
-            releaseDate: new Date(json["release_date"]),
+            title: jsonData.original_title,
+            description: jsonData.overview,
+            posterUrl: `https://image.tmdb.org/t/p/{IMAGE_WIDTH}${jsonData.poster_path}`,
+            releaseDate: new Date(jsonData.release_date),
         }
     }
 
@@ -49,11 +49,11 @@ class TmdbApi {
         if (!response.ok) {
             throw new Error('Failed to fetch movie trailer data');
         }
-        const json = await response.json();
-        if (json.results.length === 0) {
-            return null
+        const jsonData = await response.json();
+        if (jsonData.results.length === 0) {
+            return null;
         }
-        const key = json.results[0].key;
+        const key = jsonData.results[0].key;
         return `https://www.youtube.com/watch?v=${key}`;
     }
 }

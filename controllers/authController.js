@@ -33,7 +33,7 @@ class AuthController {
             return res.status(201).json({ message: "User successfully registered" });
         } catch (e) {
             console.log(e);
-            res.status(400).json({ message: 'Registration error' });
+            return res.status(400).json({ message: 'Registration error' });
         }
     }
 
@@ -52,7 +52,7 @@ class AuthController {
             return res.status(200).json({ token });
         } catch (e) {
             console.log(e);
-            res.status(400).json({ message: 'Login error' });
+            return res.status(400).json({ message: 'Login error' });
         }
     }
 

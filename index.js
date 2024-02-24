@@ -1,12 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const authRouter = require('./authRouter');
+const authRouter = require('./routers/authRouter');
+const movieRouter = require('./routers/movieRouter')
 const { MONGODB_CONNECT_URL, PORT } = require('./config');
 
 const app = express();
 
 app.use(express.json());
-app.use("/auth", authRouter);
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/movies", movieRouter)
 
 const start = async () => {
     try {
